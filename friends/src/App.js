@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
     <SimpleMenu />
-    <Route path="login" component={LoginForm}/>
+    <Route path="/login" component={LoginForm}/>
     <Route exact path="/friends" component={FriendsList} />
     </Router>
   );
