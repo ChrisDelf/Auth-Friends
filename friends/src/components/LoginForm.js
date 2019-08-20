@@ -28,20 +28,8 @@ const useStyles = makeStyles({
   }
 });
 const LoginForm = ({ errors, touched, values, status }) => {
-  const [users, setUsers] = useState([]);
-  const classes = useStyles();
-  useEffect(() => {
-    // status sometimes comes through as undefined
-    if (status) {
-      setUsers([...users, status]);
-    }
-  }, [status]);
 
-  useEffect(() => {
-    axios.get(`http://localhost:5000/api/restricted/data`).then(res => {
-      setUsers(res.data);
-    });
-  }, [status]);
+  const classes = useStyles();
 
   return (
     <>
@@ -98,7 +86,7 @@ const FormikLoginForm = withFormik({
         console.log(res);
         console.log(values);
         localStorage.setItem('token', res.data.payload)
-        setStatus(res.data);
+
         resetForm();
       })
 

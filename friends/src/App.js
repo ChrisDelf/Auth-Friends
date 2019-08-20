@@ -5,13 +5,14 @@ import './App.css';
 import SimpleMenu from './components/SimpleMenu';
 import FriendsList from './components/FriendsList';
 import LoginForm from './components/LoginForm';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <Router>
     <SimpleMenu />
     <Route path="/login" component={LoginForm}/>
-    <Route exact path="/friends" component={FriendsList} />
+    <PrivateRoute exact path="/friends" component={FriendsList} />
     </Router>
   );
 }
