@@ -9,6 +9,8 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { axiosWithAuth } from '../utils';
 
+import Friends from './Friends';
+
 const useStyles = makeStyles({
   card: {
     maxWidth: 500,
@@ -23,20 +25,14 @@ const useStyles = makeStyles({
 });
 
 const FriendsList = ({ errors, touched, values, status }) => {
-  const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const classes = useStyles();
-  useEffect(() => {
-    // status sometimes comes through as undefined
-    if (status) {
-      setUsers([...users, status]);
-    }
-  }, [status]);
 
   useEffect(() => {
     axiosWithAuth()
       .get(`http://localhost:5000/api/friends`)
       .then(res => {
-        setUsers(res.data);
+        setFriends(res.data);
         console.log('Get FriendsList', res.data);
       });
   }, [status]);
@@ -59,17 +55,17 @@ const FriendsList = ({ errors, touched, values, status }) => {
             )}
 
             <button className="button" type="submit">
-              Create Account
+              Add a new Friend!
             </button>
           </Form>
         </Card>
       </div>
 
-      {/* <div className="userCardCon"> */}
-      {/*   {users.map(user => ( */}
-      {/*     <UserCard key={user.id} props={user} /> */}
-      {/*   ))} */}
-      {/* </div> */}
+      <div className="userCardCon">
+        {friends.map(friend => (
+          <Friends key={friend.id} props={friend} />
+        ))}
+      </div>
     </>
   );
 };
@@ -91,7 +87,7 @@ const FormikFriendsList = withFormik({
     email: Yup.string().required('Please enter an email')
   }),
   handleSubmit(values, { resetForm, setStatus }) {
-    axios
+    axiosWithAuth()
       .post('http://localhost:5000/api/friends', values)
       .then(res => {
         console.log(res);
